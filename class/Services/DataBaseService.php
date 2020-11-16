@@ -104,4 +104,81 @@ class DataBaseService
 
         return $isOk;
     }
+
+    /**
+     * Create a car.
+     */
+    public function createCar(string $marque, string $modele, string $couleur, string $plaque, DateTime $annee): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'marque' => $marque,
+            'modele' => $modele,
+            'couleur' => $couleur,
+            'plaque' => $plaque,
+            'annee' => $annee->format(DateTime::RFC3339),
+        ];
+        $sql = 'INSERT INTO cars (marque, modele, couleur, plaque, annee) VALUES (:marque, :modele, :couleur, :plaque, :annee)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Return all cars.
+     */
+    public function getCars(): array
+    {
+        $cars = [];
+
+        $sql = 'SELECT * FROM cars';
+        $query = $this->connection->query($sql);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $cars = $results;
+        }
+
+        return $cars;
+    }
+
+    /**
+     * Update a car.
+     */
+    public function updateCar(string $id, string $marque, string $modele, string $couleur, string $plaque, DateTime $annee): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+            'marque' => $marque,
+            'modele' => $modele,
+            'couleur' => $couleur,
+            'plaque' => $plaque,
+            'annee' => $annee->format(DateTime::RFC3339),
+        ];
+        $sql = 'UPDATE cars SET marque = :marque, modele = :modele, couleur = :couleur, plaque = :plaque, annee = :annee WHERE id = :id;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Delete a car.
+     */
+    public function deleteCar(string $id): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+        ];
+        $sql = 'DELETE FROM cars WHERE id = :id;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
 }
