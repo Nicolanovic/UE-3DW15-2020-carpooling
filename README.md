@@ -3,3 +3,4 @@
 
 Membres du groupe :
 - Nicolas Seignette
+- Florian Duclos
