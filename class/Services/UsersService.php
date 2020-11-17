@@ -13,7 +13,6 @@ class UsersService
     public function setUser(?string $id, string $firstname, string $lastname, string $email, string $birthday): bool
     {
         $isOk = false;
-
         $dataBaseService = new DataBaseService();
         $birthdayDateTime = new DateTime($birthday);
         if (empty($id)) {

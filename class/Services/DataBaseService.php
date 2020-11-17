@@ -181,4 +181,83 @@ class DataBaseService
 
         return $isOk;
     }
+
+    /**
+     * Create a comment.
+     */
+    public function createComment(string $id_annonce, string $firstname, string $lastname, string $email, int $phone, string $content): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id_annonce' => $id_annonce,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email,
+            'phone' => $phone,
+            'content' => $content
+        ];
+        $sql = 'INSERT INTO comments (id_annonce, firstname, lastname, email, phone, content) VALUES (:id_annonce, :firstname, :lastname, :email, :phone, :content)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Return all comments.
+     */
+    public function getComments(): array
+    {
+        $comments = [];
+
+        $sql = 'SELECT * FROM comments';
+        $query = $this->connection->query($sql);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $comments = $results;
+        }
+
+        return $comments;
+    }
+
+    /**
+     * Update a comment.
+     */
+    public function updateComment(string $id, string $id_annonce, string $firstname, string $lastname, string $email, int $phone, string $content): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+            'id_annonce' => $id_annonce,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email,
+            'phone' => $phone,
+            'content' => $content,
+        ];
+        $sql = 'UPDATE comments SET id_annonce = :id_annonce, firstname = :firstname, lastname = :lastname, email = :email, phone = :phone, content = :content WHERE id = :id;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Delete a comment.
+     */
+    public function deleteComment(string $id): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+        ];
+        $sql = 'DELETE FROM comments WHERE id = :id;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
 }
