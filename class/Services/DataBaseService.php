@@ -260,4 +260,76 @@ class DataBaseService
 
         return $isOk;
     }
+
+     /**
+     * Create a reservation.
+     */
+    public function createReservation(string $id_annonce, string $id_user, DateTime $date): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id_annonce' => $id_annonce,
+            'id_user' => $id_user,
+            'date' => $date->format(DateTime::RFC3339),
+        ];
+        $sql = 'INSERT INTO reservations (id_annonce, id_user, date) VALUES (:id_annonce, :id_user, :date)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Return all cars.
+     */
+    public function getReservation(): array
+    {
+        $reservations = [];
+
+        $sql = 'SELECT * FROM reservations';
+        $query = $this->connection->query($sql);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $reservations = $results;
+        }
+
+        return $reservations;
+    }
+
+    /**
+     * Update a car.
+     */
+    public function updateReservation(string $id, string $id_annonce, string $id_user, DateTime $date): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id_annonce' => $id_annonce,
+            'id_user' => $id_user,
+            'date' => $date->format(DateTime::RFC3339),
+        ];
+        $sql = 'UPDATE cars SET id_annonce = :id_annonce, id_user = :id_user, date = :date WHERE id = :id;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Delete a reservation.
+     */
+    public function deleteReservation(string $id): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+        ];
+        $sql = 'DELETE FROM reservations WHERE id = :id;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
 }

@@ -15,7 +15,7 @@ class ReservationService
         $isOk = false;
 
         $dataBaseService = new DataBaseService();
-        $anneeDateTime = new DateTime($date);
+        $dateDateTime = new DateTime($date);
         if (empty($id)) {
             $isOk = $dataBaseService->createReservation($id_annonce, $id_user, $dateDateTime);
         } else {
@@ -39,7 +39,7 @@ class ReservationService
                 $reservation = new Reservation();
                 $reservation->setId($reservationDTO['id']);
                 $reservation->setId_annonce($reservationDTO['id_annonce']);
-                $reservation->setId_user($carDTO['$id_user']);
+                $reservation->setId_user($reservationDTO['$id_user']);
                 $date = new DateTime($reservationDTO['annee']);
                 if ($date !== false) {
                     $reservation->setDate($date);
