@@ -281,7 +281,7 @@ class DataBaseService
     }
 
     /**
-     * Return all cars.
+     * Return all reservations.
      */
     public function getReservation(): array
     {
@@ -298,13 +298,14 @@ class DataBaseService
     }
 
     /**
-     * Update a car.
+     * Update a reservation.
      */
     public function updateReservation(string $id, string $id_annonce, string $id_user, DateTime $date): bool
     {
         $isOk = false;
 
         $data = [
+            'id' => $id,
             'id_annonce' => $id_annonce,
             'id_user' => $id_user,
             'date' => $date->format(DateTime::RFC3339),
@@ -327,6 +328,81 @@ class DataBaseService
             'id' => $id,
         ];
         $sql = 'DELETE FROM reservations WHERE id = :id;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+     /**
+     * Create an ad.
+     */
+    public function createAd(string $title, string $description, string $id_user, string $id_car): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'title' => $title,
+            'description' => $description,
+            'id_user' => $id_user,
+            'id_car' => $id_car,
+        ];
+        $sql = 'INSERT INTO ads (title, description, id_user, id_car) VALUES (:title, :description, :id_user, :id_car)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Return all ads.
+     */
+    public function getAds(): array
+    {
+        $ads = [];
+
+        $sql = 'SELECT * FROM ads';
+        $query = $this->connection->query($sql);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $ads = $results;
+        }
+
+        return $ads;
+    }
+
+    /**
+     * Update an ad.
+     */
+    public function updateAd(string $id, string $title, string $description, string $id_user, string $id_car): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+            'title' => $title,
+            'description' => $description,
+            'id_user' => $id_user,
+            'id_car' => $id_car,
+        ];
+        $sql = 'UPDATE ads SET id = :id, title = :title, description = :description, id_user = :id_user, id_car = :id_car;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Delete an ad.
+     */
+    public function deleteAd(string $id): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+        ];
+        $sql = 'DELETE FROM ads WHERE id = :id;';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
