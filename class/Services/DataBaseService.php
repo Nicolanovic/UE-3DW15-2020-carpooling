@@ -33,7 +33,7 @@ class DataBaseService
     /**
      * Create an user.
      */
-    public function createUser(string $firstname, string $lastname, string $email, DateTime $birthday): string
+    public function createUser(string $firstname, string $lastname, string $email, DateTime $birthday): bool
     {
         $isOk = false;
 
@@ -46,11 +46,8 @@ class DataBaseService
         $sql = 'INSERT INTO users (firstname, lastname, email, birthday) VALUES (:firstname, :lastname, :email, :birthday)';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
-        if ($isOk) {
-            $userId = $this->connection->lastInsertId();
-        }
 
-        return $userId;
+        return $isOk;
     }
 
     /**
@@ -179,24 +176,6 @@ class DataBaseService
             'id' => $id,
         ];
         $sql = 'DELETE FROM cars WHERE id = :id;';
-        $query = $this->connection->prepare($sql);
-        $isOk = $query->execute($data);
-
-        return $isOk;
-    }
-
-    /**
-     * Create relation between an user and his car.
-     */
-    public function setUserCar(string $userId, string $carId): bool
-    {
-        $isOk = false;
-
-        $data = [
-            'userId' => $userId,
-            'carId' => $carId,
-        ];
-        $sql = 'INSERT INTO users_cars (user_id, car_id) VALUES (:userId, :carId)';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
