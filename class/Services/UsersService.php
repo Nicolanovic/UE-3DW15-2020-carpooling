@@ -10,18 +10,19 @@ class UsersService
     /**
      * Create or update an user.
      */
-    public function setUser(?string $id, string $firstname, string $lastname, string $email, string $birthday): bool
+    public function setUser(?string $id, string $firstname, string $lastname, string $email, string $birthday): string
     {
-        $isOk = false;
+        $userId = '';
         $dataBaseService = new DataBaseService();
         $birthdayDateTime = new DateTime($birthday);
         if (empty($id)) {
-            $isOk = $dataBaseService->createUser($firstname, $lastname, $email, $birthdayDateTime);
+            $userId = $dataBaseService->createUser($firstname, $lastname, $email, $birthdayDateTime);
         } else {
-            $isOk = $dataBaseService->updateUser($id, $firstname, $lastname, $email, $birthdayDateTime);
+            $dataBaseService->updateUser($id, $firstname, $lastname, $email, $birthdayDateTime);
+            $userId = $id;
         }
 
-        return $isOk;
+        return $userId;
     }
 
     /**
@@ -60,6 +61,19 @@ class UsersService
 
         $dataBaseService = new DataBaseService();
         $isOk = $dataBaseService->deleteUser($id);
+
+        return $isOk;
+    }
+
+    /**
+     * Create relation between an user and his car.
+     */
+    public function setUserCar(string $userId, string $carId): bool
+    {
+        $isOk = false;
+
+        $dataBaseService = new DataBaseService();
+        $isOk = $dataBaseService->setUserCar($userId, $carId);
 
         return $isOk;
     }
