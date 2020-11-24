@@ -2,15 +2,13 @@
 
 namespace App\Entities;
 
-use DateTime;
-
 class Ad
 {
     private $id;
     private $title;
     private $description;
-    private $id_user;
-    private $id_car;
+    private $user;
+    private $car;
 
     /**
      * Get the value of id
@@ -72,42 +70,43 @@ class Ad
         return $this;
     }
 
-     /**
-     * Get the value of id_user
+
+    /**
+     * Get the value of user
      */
-    public function getId_user()
+    public function getUser(): ?array
     {
-        return $this->id_user;
+        return $this->user;
     }
 
     /**
-     * Set the value of id_user
+     * Set the value of user
      *
      * @return  self
      */
-    public function setId_user($id_user)
+    public function setUser(array $user)
     {
-        $this->id_user = $id_user;
+        $this->user = $user;
 
         return $this;
     }
 
-     /**
-     * Get the value of id_car
+    /**
+     * Get the value of car
      */
-    public function getId_car()
+    public function getCar(): ?array
     {
-        return $this->id_car;
+        return $this->car;
     }
 
     /**
-     * Set the value of id_car
+     * Set the value of car
      *
      * @return  self
      */
-    public function setId_car($id_car)
+    public function setCar(array $car)
     {
-        $this->id_car = $id_car;
+        $this->car = $car;
 
         return $this;
     }

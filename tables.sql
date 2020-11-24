@@ -69,3 +69,25 @@ INSERT INTO `reservations` (`id`, `id_annonce`, `id_user`, `date`) VALUES
 (1, '1', '6', '2016-02-06'),
 (2, '2', '15', '2016-06-05'),
 (3, '3', '2', '2016-01-18');
+
+CREATE TABLE `ads_users` (
+	`ad_id` INT NOT NULL, 
+	`user_id` INT NOT NULL, 
+	PRIMARY KEY(ad_id, user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `ads_users` (`ad_id`, `user_id`) VALUES
+(2, 1),
+(1, 2),
+(3, 3);
+
+CREATE TABLE `ads_cars` (
+	`ad_id` INT NOT NULL, 
+	`car_id` INT NOT NULL, 
+	PRIMARY KEY(ad_id, car_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `ads_cars` (`ad_id`, `car_id`) VALUES
+(1, 1),
+(2, 2),
+(3, 3);
