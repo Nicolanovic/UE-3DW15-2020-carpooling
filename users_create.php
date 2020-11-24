@@ -7,11 +7,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 $controller = new UsersController();
 echo $controller->createUser();
-
-$carsService = new CarsService();
-$cars = $carsService->getCars();
 ?>
-
 
 <p>Création d'un utilisateur</p>
 <form method="post" action="users_create.php" name ="userCreateForm">
@@ -34,5 +30,6 @@ $cars = $carsService->getCars();
         <br />
     <?php endforeach; ?>
     <br />
+
     <input type="submit" value="Créer un utilisateur">
 </form>

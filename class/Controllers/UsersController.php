@@ -17,17 +17,17 @@ class UsersController
         if (isset($_POST['firstname']) &&
             isset($_POST['lastname']) &&
             isset($_POST['email']) &&
-            isset($_POST['birthday']) &&
-            isset($_POST['cars'])) {
+            isset($_POST['birthday'])) {
             // Create the user :
             $usersService = new UsersService();
-            $userId = $usersService->setUser(
+            $isOk = $usersService->setUser(
                 null,
                 $_POST['firstname'],
                 $_POST['lastname'],
                 $_POST['email'],
                 $_POST['birthday']
             );
+
 
             // Create the relation users to cars :
             $isOk = true;
@@ -39,6 +39,9 @@ class UsersController
 
 
             if ($isOk && $userId) {
+
+            if ($isOk) {
+
                 $html = 'Utilisateur créé avec succès.';
             } else {
                 $html = 'Erreur lors de la création de l\'utilisateur.';
@@ -72,8 +75,12 @@ class UsersController
                 $user->getFirstname() . ' ' .
                 $user->getLastname() . ' ' .
                 $user->getEmail() . ' ' .
+
                 $user->getBirthday()->format('d-m-Y') . '' .
                 $carsHtml . '<br />';
+
+                $user->getBirthday()->format('d-m-Y') . '<br />';
+
         }
 
         return $html;

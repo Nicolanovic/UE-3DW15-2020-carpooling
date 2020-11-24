@@ -11,7 +11,6 @@ class User
     private $lastname;
     private $email;
     private $birthday;
-    private $cars;
 
     public function getId(): string
     {
@@ -63,6 +62,7 @@ class User
         $this->birthday = $birthday;
     }
 
+
     public function getCars(): ?array
     {
         return $this->cars;
@@ -72,4 +72,5 @@ class User
     {
         $this->cars = $cars;
     }
+
 }
