@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Entities\Car;
 use App\Entities\User;
 use DateTime;
 
@@ -44,6 +45,11 @@ class UsersService
                 if ($date !== false) {
                     $user->setbirthday($date);
                 }
+
+                // Get cars of this user
+                $cars = $this->getUserCars($userDTO['id']);
+                $user->setCars($cars);
+
                 $users[] = $user;
             }
         }
@@ -63,4 +69,45 @@ class UsersService
 
         return $isOk;
     }
+
+
+    /**
+     * Create relation between an user and his car.
+     */
+    public function setUserCar(string $userId, string $carId): bool
+    {
+        $isOk = false;
+
+        $dataBaseService = new DataBaseService();
+        $isOk = $dataBaseService->setUserCar($userId, $carId);
+
+        return $isOk;
+    }
+
+
+    /**
+     * Get cars of a user.
+     */
+    public function getUserCars(string $userId): array
+    {
+        $userCars = [];
+
+        $dataBaseService = new DataBaseService();
+        $usersCarsDTO = $dataBaseService->getUsersCars($userId);
+        if (!empty($usersCarsDTO)) {
+            foreach ($usersCarsDTO as $userCarDTO) {
+                $car = new Car();
+                $car->setId($userCarDTO['id']);
+                $car->setMarque($userCarDTO['marque']);
+                $car->setModele($userCarDTO['modele']);
+                $car->setCouleur($userCarDTO['couleur']);
+                $car->setPlaque($userCarDTO['plaque']);
+
+                $userCars[] = $car;
+            }
+        }
+
+        return $userCars;
+    }
+
 }
