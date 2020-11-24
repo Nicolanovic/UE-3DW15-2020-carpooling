@@ -25,11 +25,23 @@ class ReservationController
                 $_POST['id_user'],
                 $_POST['date']
             );
-            if ($isOk) {
-                $html = 'Réservation demandée avec succès.';
-            } else {
-                $html = 'Erreur lors de la réservation.';
+
+            // Create the relation users to reservation :
+            $isOk = true;
+            if (!empty($_POST['users'])) {
+                foreach ($_POST['users']  as $userId) {
+                    $isOk = $usersService->setUserReservation($userId, $reservationId);
+                }
             }
+
+           if ($isOk && $userId) {
+
+           if ($isOk) {
+
+               $html = 'Réservation créée avec succès.';
+           } else {
+               $html = 'Erreur lors de la création de la réservation.';
+           }
         }
 
         return $html;
@@ -109,4 +121,22 @@ class ReservationController
 
         return $html;
     }
+
+    // Create the relation users to reservation :
+             $isOk = true;
+             if (!empty($_POST['users'])) {
+                 foreach ($_POST['users']  as $userId) {
+                     $isOk = $usersService->setUserReservation($userId, $reservationId);
+                 }
+             }
+
+
+            if ($isOk && $userId) {
+
+            if ($isOk) {
+
+                $html = 'Réservation créée avec succès.';
+            } else {
+                $html = 'Erreur lors de la création de la réservation.';
+            }
 }

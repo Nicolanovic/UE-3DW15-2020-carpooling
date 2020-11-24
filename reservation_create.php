@@ -16,8 +16,13 @@ echo $controller->createReservation();
     <label for="id_annonce">ID de l'annonce :</label>
     <input type="text" name="id_annonce">
     <br />
-    <label for="couleur">Id de l'utilisateur :</label>
+    <label for="id_user">Id de l'utilisateur :</label>
     <input type="text" name="id_user">
+    <?php foreach ($users as $user):?>
+        <?php $userName = $user->getFirstname() . ' ' . $user->getLastname() . ' ';?>
+        <input type="checkbox" name="id_users[]" value="<?php echo $user->getId(); ?>"><?php echo $userName; ?>
+        <br />
+    <?php endforeach; ?>
     <br />
     <input type="submit" value="Réserver">
 </form>
