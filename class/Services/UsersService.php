@@ -110,4 +110,40 @@ class UsersService
         return $userCars;
     }
 
+    /**
+     * Create relation between an user and his reservation.
+     */
+    public function setUserReservation(string $userId, string $reservationId): bool
+    {
+        $isOk = false;
+
+        $dataBaseService = new DataBaseService();
+        $isOk = $dataBaseService->setUserReservation($userId, $reservationId);
+
+        return $isOk;
+    }
+
+    /**
+     * Get user for a reservation.
+     */
+    public function getUserReservation(string $userId): array
+    {
+        $userReservation = [];
+
+        $dataBaseService = new DataBaseService();
+        $usersReservationsDTO = $dataBaseService->getUsersReservation($userId);
+        if (!empty($usersReservationsDTO)) {
+            foreach ($usersReservationsDTO as $userReservationDTO) {
+                $user = new User();
+                $user->setId($userReservationDTO['id']);
+                $user->setFirstname($userReservationDTO['firstname']);
+                $user->setLastname($userReservationDTO['lastname']);
+
+                $userReservations[] = $user;
+            }
+        }
+
+        return $userReservations;
+    }
+
 }

@@ -10,6 +10,7 @@ class Reservation
     private $id_annonce;
     private $id_user;
     private $date;
+    private $users;
 
     /**
      * Get the value of id
@@ -89,5 +90,15 @@ class Reservation
         $this->date = $date;
 
         return $this;
+    }
+
+    public function getUser(): array
+    {
+        return $this->users;
+    }
+
+    public function setUsers(array $users)
+    {
+        $this->users = $users;
     }
 }
