@@ -63,7 +63,7 @@ class User
         $this->birthday = $birthday;
     }
 
-    public function getCars(): array
+    public function getCars(): ?array
     {
         return $this->cars;
     }

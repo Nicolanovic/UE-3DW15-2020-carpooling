@@ -33,7 +33,7 @@ class UsersController
             $isOk = true;
             if (!empty($_POST['cars'])) {
                 foreach ($_POST['cars']  as $carId) {
-                    $isOk = $usersService->setUserCar($userId, $carId)
+                    $isOk = $usersService->setUserCar($userId, $carId);
                 }
             }
 
@@ -61,13 +61,19 @@ class UsersController
 
         // Get html :
         foreach ($users as $user) {
+            $carsHtml = '';
+            if (!empty($user->getCars())) {
+                foreach ($user->getCars() as $car) {
+                    $carsHtml .= $car->getMarque() . ' ' . $car->getModele() . ' ' . $car->getCouleur() . ' ' . $car->getPlaque() . ' ';
+                }
+            }
             $html .=
                 '#' . $user->getId() . ' ' .
                 $user->getFirstname() . ' ' .
                 $user->getLastname() . ' ' .
                 $user->getEmail() . ' ' .
                 $user->getBirthday()->format('d-m-Y') . '' .
-                $user-getCars() . '<br />';
+                $carsHtml . '<br />';
         }
 
         return $html;

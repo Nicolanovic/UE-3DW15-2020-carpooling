@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\UsersController;
+use App\Services\CarsService;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -27,8 +28,8 @@ $cars = $carsService->getCars();
     <input type="text" name="birthday">
     <br />
     <label for="cars">Voiture(s) :</label>
-    <? foreach ($cars as $car): ?>
-        <?php $carName = $car->getBrand() . ' ' . $car->getModel() . ' ' . $car->getColor() . ' ' . $car->getNumberplate();?>
+    <?php foreach ($cars as $car):?>
+        <?php $carName = $car->getMarque() . ' ' . $car->getModele() . ' ' . $car->getCouleur() . ' ' . $car->getPlaque();?>
         <input type="checkbox" name="cars[]" value="<?php echo $car->getId(); ?>"><?php echo $carName; ?>
         <br />
     <?php endforeach; ?>
