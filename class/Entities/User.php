@@ -61,4 +61,16 @@ class User
     {
         $this->birthday = $birthday;
     }
+
+
+    public function getCars(): ?array
+    {
+        return $this->cars;
+    }
+
+    public function setCars(array $cars)
+    {
+        $this->cars = $cars;
+    }
+
 }
