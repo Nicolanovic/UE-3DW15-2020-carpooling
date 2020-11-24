@@ -43,7 +43,7 @@ INSERT INTO `comments` (`id`, `id_annonce`, `firstname`, `lastname`, `email`, `p
 (2, 1, 'Pierre', 'Dupond', 'pierredupond@gmail.com', '0612454323', 'Bonjour, je suis intéressé par votre annonce, merci de me recontacter par mail.'),
 (3, 2, 'Jean', 'Dujardin', 'jeandujardin@gmail.com', '0687765643', 'Bonjour, je suis intéressé par votre annonce.');
 
-CREATE TABLE `ad` (
+CREATE TABLE `ads` (
   `id` int AUTO_INCREMENT NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -52,12 +52,12 @@ CREATE TABLE `ad` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `ad` (`id`, `title`, `description`, `id_user`, `id_car`) VALUES
+INSERT INTO `ads` (`id`, `title`, `description`, `id_user`, `id_car`) VALUES
 (1, 'Carpooling en Tesla', 'Je vous propose un covoiturage au sein de ma Tesla Model X', '5', '1'),
 (2, 'Covoit disponible', 'ne voyagez pas tout seul, accompagnez moi !', '3', '3'),
 (3, 'Covoiturage long trajet', 'Je fais un long trajet chaque jour, si vous faites le même faisons le ensemble', '8', '2');
 
-CREATE TABLE `reservation` (
+CREATE TABLE `reservations` (
   `id` int AUTO_INCREMENT NOT NULL,
   `id_annonce` varchar(255) NOT NULL,
   `id_user` varchar(255) NOT NULL,
@@ -65,7 +65,29 @@ CREATE TABLE `reservation` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `reservation` (`id`, `id_annonce`, `id_user`, `date`) VALUES
+INSERT INTO `reservations` (`id`, `id_annonce`, `id_user`, `date`) VALUES
 (1, '1', '6', '2016-02-06'),
 (2, '2', '15', '2016-06-05'),
 (3, '3', '2', '2016-01-18');
+
+CREATE TABLE `ads_users` (
+	`ad_id` INT NOT NULL, 
+	`user_id` INT NOT NULL, 
+	PRIMARY KEY(ad_id, user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `ads_users` (`ad_id`, `user_id`) VALUES
+(2, 1),
+(1, 2),
+(3, 3);
+
+CREATE TABLE `ads_cars` (
+	`ad_id` INT NOT NULL, 
+	`car_id` INT NOT NULL, 
+	PRIMARY KEY(ad_id, car_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `ads_cars` (`ad_id`, `car_id`) VALUES
+(1, 1),
+(2, 2),
+(3, 3);

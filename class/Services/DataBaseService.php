@@ -261,9 +261,9 @@ class DataBaseService
         return $isOk;
     }
 
-     /**
-     * Create a reservation.
-     */
+    /**
+    * Create a reservation.
+    */
     public function createReservation(string $id_annonce, string $id_user, DateTime $date): bool
     {
         $isOk = false;
@@ -334,20 +334,18 @@ class DataBaseService
         return $isOk;
     }
 
-     /**
-     * Create an ad.
-     */
-    public function createAd(string $title, string $description, string $id_user, string $id_car): bool
+    /**
+    * Create an ad.
+    */
+    public function createAd(string $title, string $description): bool
     {
         $isOk = false;
 
         $data = [
             'title' => $title,
-            'description' => $description,
-            'id_user' => $id_user,
-            'id_car' => $id_car,
+            'description' => $description
         ];
-        $sql = 'INSERT INTO ads (title, description, id_user, id_car) VALUES (:title, :description, :id_user, :id_car)';
+        $sql = 'INSERT INTO ads (title, description) VALUES (:title, :description)';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
@@ -374,18 +372,16 @@ class DataBaseService
     /**
      * Update an ad.
      */
-    public function updateAd(string $id, string $title, string $description, string $id_user, string $id_car): bool
+    public function updateAd(string $id, string $title, string $description): bool
     {
         $isOk = false;
 
         $data = [
             'id' => $id,
             'title' => $title,
-            'description' => $description,
-            'id_user' => $id_user,
-            'id_car' => $id_car,
+            'description' => $description
         ];
-        $sql = 'UPDATE ads SET id = :id, title = :title, description = :description, id_user = :id_user, id_car = :id_car;';
+        $sql = 'UPDATE ads SET id = :id, title = :title, description = :description WHERE id = :id;';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
@@ -407,5 +403,91 @@ class DataBaseService
         $isOk = $query->execute($data);
 
         return $isOk;
+    }
+
+    /**
+     * Create relation bewteen an ad and its user.
+     */
+    public function setAdUser(string $adId, string $userId): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'adId' => $adId,
+            'userId' => $userId,
+        ];
+        $sql = 'INSERT INTO ads_users (ad_id, user_id) VALUES (:adId, :userId)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Get user of given ad id.
+     */
+    public function getAdUser(string $adId): array
+    {
+        $adUser = [];
+
+        $data = [
+            'adId' => $adId,
+        ];
+        $sql = '
+            SELECT c.*
+            FROM users as u
+            LEFT JOIN ads_users as au ON au.user_id = u.id
+            WHERE au.ad_id = :adId';
+        $query = $this->connection->prepare($sql);
+        $query->execute($data);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $adUser = $results;
+        }
+
+        return $adUser;
+    }
+
+    /**
+     * Create relation bewteen an ad and its car.
+     */
+    public function setAdCar(string $adId, string $carId): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'adId' => $adId,
+            'carId' => $carId,
+        ];
+        $sql = 'INSERT INTO ads_cars (ad_id, car_id) VALUES (:adId, :carId)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Get car of given ad id.
+     */
+    public function getAdCar(string $adId): array
+    {
+        $adCar = [];
+
+        $data = [
+            'adId' => $adId,
+        ];
+        $sql = '
+            SELECT c.*
+            FROM cars as c
+            LEFT JOIN ads_cars as ac ON ac.car_id = c.id
+            WHERE ac.ad_id = :adId';
+        $query = $this->connection->prepare($sql);
+        $query->execute($data);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $adCar = $results;
+        }
+
+        return $adCar;
     }
 }
